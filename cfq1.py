@@ -1,4 +1,6 @@
 import visdom
+import torchvision.transforms as transforms
+
 
 import modules.args_cfq1
 import modules.cfd as cfd
@@ -35,26 +37,28 @@ class CFQ(cfd.CFD, dtst.DTST, dset.DSET, cnne.CNNE, vaee.VAEE,
 
         if self._cfd is None:
             print('cfd is NOT active')
+            pass
         else:
             print('cfd is active')
-            data = cfd.CFD.test_cfd(self, data) + 1
-        return data
+            return cfd.CFD.test_cfd(self, data) + 1
 
     def for_dtst(self, data_type):
 
         if self._dtst is None:
             print('dtst is NOT active')
+            pass
         else:
             print('dtst is active')
-            data = dtst.DTST.test_dtst(self, data_type)
+            return dtst.DTST.test_dtst(self, data_type)
 
     def for_dset(self, data_path):
 
         if self._dset is None:
             print('dset is NOT active')
+            pass
         else:
             print('dset is active')
-            # data = dset.DSET.test_dset(self, data)
+            data = dset.DSET.test_dset(self)
             # dset = DSET(data_path)
             # dset.DSET.test_dset(data)
             # CFQ.dset.DSET.
@@ -134,12 +138,17 @@ if __name__ == "__main__":
     args = modules.args_cfq1.parser.parse_args()
     # viz = visdom.Visdom(env=args.env)
 
-    p = CFQ(_cfd=None, _dtst=None, _dset=None, _cnne=True, _vaee=None,
+    p = CFQ(_cfd=None, _dtst=True, _dset=True, _cnne=True, _vaee=None,
             _rbm=None, _cnnd=True, _vaed=None, _warp=True, _rslt=True)
 #
-#     # p.for_dtst(data_type=args.datatype)  # preparing the dataset
-#     # p.for_dset(data_path=args.train_root)  # loading the dateset
-#     # dset = p.dset.DSET(args.train_root)   # loading the dateset
-#
+    p.for_cfd(data=1)
+    p.for_dtst(data_type=args.data_type)  # preparing the dataset
+    p.for_dset(data_path=args.train_root)  # loading the dateset
+    dset = dset.DSET(args.train_root)   # loading the dateset
+    # test_dset = p.DSET(args.test_root, seq_len=args.seq_len,
+    #                       target_seq_len=args.target_seq_len,
+    #                       transform=transforms.Compose([transforms.ToTensor()]),
+    #                       )
+
 #     # p = p.for_rslt(data=1)
 #     print('CFQobject', p)

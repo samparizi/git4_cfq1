@@ -14,7 +14,7 @@ class DSET(torch.utils.data.Dataset):
                  transform=True,
                  zones=None,
                  ):
-        super(DSET, self).__init__()
+        # super(DSET, self).__init__()
 
         if zones is None:  # using all zones
             zones = range(1, 2)
@@ -41,8 +41,8 @@ class DSET(torch.utils.data.Dataset):
         self.num_single = self.data[zones[0]].shape[0] - self.seq_len - self.target_seq_len - 1  # ( # -1 ?)
         self.num = self.num_single * len(zones)
 
-    def test_dset(self, data):
-        return data + 1
+    def test_dset(self):
+        pass
 
     def __getitem__(self, index):
 

@@ -7,7 +7,7 @@ class CFD:
         self.data = data
 
     def test_cfd(self, data):
-        return data + 1
+        pass
 
 
 if __name__ == "__main__":
