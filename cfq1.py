@@ -197,8 +197,8 @@ if __name__ == "__main__":
             _rbm=None, _cnnd=True, _vaed=None, _warp=True, _rslt=True)
 #
     p.for_cfd()
+    p.for_dtst(data_type=args.data_type)
 
-    p.for_dtst(data_type=args.data_type)  # preparing the dataset
     # p.for_dset(data_path=args.train_root)  # loading the dateset
     train_data = dset.DSET(root=args.train_root)  # loading the train_dateset
     test_data = dset.DSET(root=args.test_root)  # loading the test_dateset
@@ -249,9 +249,9 @@ if __name__ == "__main__":
                     im = warp(x[:, -1, :, :].unsqueeze(1), w)
                     # print('im_size_warp(last_im_and endecoder(x)',im.size())
 
-                    # print('x_new_before_cat_and_im', x.size())
+                    print('x_new_before_cat_and_im', x.size())
                     x = torch.cat((x[:, 1:, :, :], im), 1)
-                    # print('x_new_after_cat_and_im', x.size())
+                    print('x_new_after_cat_and_im', x.size())
 
                     curr_pl = photo_loss(im, y)
                     pl += torch.mean(curr_pl)
@@ -277,7 +277,7 @@ if __name__ == "__main__":
                 meters.update(
                     dict(loss=loss.data, pl=pl.data, dl=dl.data, sl=sl.data, ml=ml.data,
                          ), n=x.size(0))
-
+#############################################################################################################
             if not args.no_plot:
                 images = [
                     ('target', {'in': input.transpose(0, 1).numpy(), 'out': ys.data.numpy()}),
@@ -302,17 +302,18 @@ if __name__ == "__main__":
                 res.setdefault(metric, [])
                 res[metric].append(avg)
 
-        # plotting
-        for metric in res:
-            y = np.expand_dims(np.array(res[metric]), 0)
-            x = np.array([[epoch]*len(results)])
-
-            if epoch == 1:
-                win = viz.line(X=x, Y=y, opts=dict(showlegend=True, legend=legend, title=metric))
-                viz_wins[metric] = win
-
-            else:
-                viz.line(X=x, Y=y, opts=dict(showlegend=True, legend=legend, title=metric),
-                         win=viz_wins[metric],
-                         update='append')
-
+        # # plotting
+        # for metric in res:
+        #
+        #     y = np.expand_dims(np.array(res[metric]), 0)
+        #     x = np.array([[epoch]*len(results)])
+        #
+        #     if epoch == 1:
+        #         win = viz.line(X=x, Y=y, opts=dict(showlegend=True, legend=legend, title=metric))
+        #         viz_wins[metric] = win
+        #
+        #     else:
+        #         viz.line(X=x, Y=y, opts=dict(showlegend=True, legend=legend, title=metric),
+        #                  win=viz_wins[metric],
+        #                  update='append')
+        #
