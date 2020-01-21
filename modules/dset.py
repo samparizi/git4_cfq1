@@ -3,14 +3,13 @@ import numpy as np
 import torch.utils.data
 from torchvision import transforms
 import torch
-
-# import modules.args_cfq1
-# args = modules.args_cfq1.parser.parse_args()
+from . import args_cfq1
+args = args_cfq1.parser.parse_args()
 
 
 class DSET(torch.utils.data.Dataset):
 
-    def __init__(self, root=0, seq_len=4, target_seq_len=6,
+    def __init__(self, root=args.train_root, seq_len=args.seq_len, target_seq_len=args.target_seq_len,
                  transform=True,
                  zones=None,
                  ):
@@ -27,7 +26,7 @@ class DSET(torch.utils.data.Dataset):
         self.transform = transforms.Compose([
             transforms.ToPILImage(),
             # transforms.CenterCrop(10),
-            transforms.Resize(size=(60, 60)),
+            # transforms.Resize(size=(64, 64)),
             # transforms.Resize(60),
             transforms.ToTensor(),
             # transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
@@ -53,8 +52,8 @@ class DSET(torch.utils.data.Dataset):
         input = pdata[sample_num: sample_num + self.seq_len, :, :]
         target = pdata[sample_num + self.seq_len: sample_num + self.seq_len + self.target_seq_len, :, :]
 
-        return self.transform(input), self.transform(target)
-        # return input, target
+        # return self.transform(input), self.transform(target)
+        return input, target
 
     def __len__(self):
         return self.num - len(self.zones)

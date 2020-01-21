@@ -78,13 +78,16 @@ class DTST:
 
     def test_dtst(self, data_type):
         if data_type == 'h5py_myfile':
+            print('h5py_myfile dataset is in process')
             data = self.h5py_myfile()
         elif data_type == 'h5py_sandeep':
+            print('h5py_sadeep dataset is in process')
             data = self.h5py_sandeep()
         elif data_type == 'nc_file':
+            print('ncfile dataset is in process')
             data = self.nc_file()
         else:
-            print("no data")
+            print("no dataset is in progress")
             data = {}
 
         output = open('/Users/mostafa/OneDrive - alumni.ubc.ca/datas/train/data_1.pkl', 'wb')
